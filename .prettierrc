@@ -1,0 +1,9 @@
+{  "trailingComma": "es5",
+  "semi": false,
+  "singleQuote": true,
+  "printWidth": 100,
+  "bracketSameLine": false,
+  "endOfLine": "auto",
+  "importOrder": ["^react$", "^[a-z]", "^@?\\w", "^\\.", "^.*$"],
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}

@@ -1,0 +1,14 @@
+.level-cell {
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
+
+  .level-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+}

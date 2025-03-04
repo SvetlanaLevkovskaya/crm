@@ -1,0 +1,46 @@
+@import "/src/styles/variables";
+
+.table-container {
+  padding: 0 10px;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid $border-color;
+      text-align: left;
+    }
+
+    th {
+      color: $text-gray-color;
+      font-weight: 400;
+    }
+
+    th:nth-child(1) {
+      width: 110px;
+    }
+
+    th:nth-child(2) {
+      width: 757px;
+    }
+
+    th:nth-child(3) {
+      width: 200px;
+    }
+
+    th:nth-child(4) {
+      width: 200px;
+    }
+
+    th:nth-child(5) {
+      width: 200px;
+    }
+
+    th:nth-child(6) {
+      width: 200px;
+    }
+  }
+}
