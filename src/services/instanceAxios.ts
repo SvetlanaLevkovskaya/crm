@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production'
-
 export const handleApiError = (error: unknown): string => {
   let errorMessage = 'Unexpected Error'
 
@@ -25,7 +23,7 @@ export const handleApiError = (error: unknown): string => {
 }
 
 export const instanceAxios = axios.create({
-  baseURL: IS_DEVELOPMENT ? 'http://185.244.172.108:8081/' : '/api',
+  baseURL: '/api',
 })
 
 instanceAxios.interceptors.request.use((config) => {
