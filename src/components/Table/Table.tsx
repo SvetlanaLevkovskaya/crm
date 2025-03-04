@@ -52,7 +52,10 @@ export const Table = () => {
           overheads={row.overheads}
           estimatedProfit={row.estimatedProfit}
         />
-        {row.child && row.child.length > 0 && renderRows(row.child, levelDepth + 1)}
+        {row.child &&
+          row.child.length > 0 &&
+          levelDepth < 2 &&
+          renderRows(row.child, levelDepth + 1)}
       </Fragment>
     ))
   }
