@@ -8,10 +8,20 @@
     width: 100%;
     border-collapse: collapse;
 
-    th, td {
+    th {
       padding: 10px;
       border-bottom: 1px solid $border-color;
       text-align: left;
+    }
+
+    td {
+      padding: 16px 12px;
+      border-bottom: 1px solid $border-color;
+      text-align: left;
+
+      &.editing {
+        padding: 8px 12px;
+      }
     }
 
     th {
@@ -27,20 +37,28 @@
       width: 757px;
     }
 
-    th:nth-child(3) {
-      width: 200px;
-    }
-
-    th:nth-child(4) {
-      width: 200px;
-    }
-
-    th:nth-child(5) {
-      width: 200px;
-    }
-
+    th:nth-child(3),
+    th:nth-child(4),
+    th:nth-child(5),
     th:nth-child(6) {
       width: 200px;
     }
+  }
+}
+
+
+td input {
+  width: 100%;
+  height: 36px;
+  padding: 8px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  background-color: $table-color;
+  color: $text-gray-color;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  &:focus {
+    border: 1px solid $border-color;
+    outline: none;
   }
 }
