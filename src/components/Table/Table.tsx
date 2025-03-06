@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react'
 import { Spinner } from '../ui/Spinner'
 import { TABLE_HEADERS } from './Table.conctants'
 import './Table.style.scss'
-import { FetchTableDataDto } from './Table.types'
+import { TableRowDto } from './Table.types'
 import { TableRow } from './TableRow'
 import { useTableData } from './useTableData.hook'
 
@@ -13,7 +13,7 @@ export const Table = () => {
     if (loading) return <Spinner />
     if (error) return null
 
-    const renderRows = (data: FetchTableDataDto[], levelDepth = 0) => {
+    const renderRows = (data: TableRowDto[], levelDepth = 0) => {
         return data.map((row) => (
             <Fragment key={row.id}>
                 <TableRow

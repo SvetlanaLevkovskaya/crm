@@ -1,3 +1,3 @@
-import { FetchTableDataDto } from '../Table.types'
+import { TableRowDto } from '../Table.types'
 
-export type UpdateTableRowDto = Omit<FetchTableDataDto, 'id' | 'total' | 'child'>
+export type UpdateTableRowDto = Omit<TableRowDto, 'id' | 'total' | 'child'>

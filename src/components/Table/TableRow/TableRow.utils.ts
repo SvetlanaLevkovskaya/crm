@@ -1,6 +1,6 @@
-import { FetchTableDataDto } from '../Table.types'
+import { TableRowDto } from '../Table.types'
 
-export function findParentId(rows: FetchTableDataDto[], childId: number | null): number | null {
+export function findParentId(rows: TableRowDto[], childId: number | null): number | null {
     if (!Array.isArray(rows)) return null
 
     for (const row of rows) {
@@ -11,10 +11,7 @@ export function findParentId(rows: FetchTableDataDto[], childId: number | null):
     return null
 }
 
-export function removeRowById(
-    rows: FetchTableDataDto[],
-    idToRemove: number | null
-): FetchTableDataDto[] {
+export function removeRowById(rows: TableRowDto[], idToRemove: number | null): TableRowDto[] {
     return rows
         .filter((row) => row.id !== idToRemove)
         .map((row) => ({

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { customToastError } from '../ui/CustomToast'
 import { fetchTableData } from './Table.service'
-import { FetchTableDataDto } from './Table.types'
+import { TableRowDto } from './Table.types'
 
 export const useTableData = () => {
-    const [tableData, setTableData] = useState<FetchTableDataDto[]>([])
+    const [tableData, setTableData] = useState<TableRowDto[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 

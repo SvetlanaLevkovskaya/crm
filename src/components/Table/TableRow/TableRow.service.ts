@@ -1,9 +1,9 @@
 import { handleApiError, instanceAxios } from '../../../services'
 import { EID } from '../Table.conctants'
-import { FetchTableDataDto } from '../Table.types'
+import { TableRowDto } from '../Table.types'
 import { UpdateTableRowDto } from './TableRow.types'
 
-export const createTableRow = async (formData: FetchTableDataDto, parentId: number | null) => {
+export const createTableRow = async (formData: TableRowDto, parentId: number | null) => {
     try {
         const response = await instanceAxios.post(`/v1/outlay-rows/entity/${EID}/row/create`, {
             ...formData,

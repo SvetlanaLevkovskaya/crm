@@ -10,7 +10,7 @@ import {
     useState,
 } from 'react'
 import { LevelIcon, TrashIcon } from '../../ui/Icons'
-import { FetchTableDataDto } from '../Table.types'
+import { TableRowDto } from '../Table.types'
 import { createTableRow, deleteTableRow } from './TableRow.service'
 import './TableRow.style.scss'
 import { findParentId, formatCurrency, removeRowById } from './TableRow.utils'
@@ -24,8 +24,8 @@ interface Props {
     equipmentCosts: number
     overheads: number
     estimatedProfit: number
-    setTableData: Dispatch<SetStateAction<FetchTableDataDto[]>>
-    tableData: FetchTableDataDto[]
+    setTableData: Dispatch<SetStateAction<TableRowDto[]>>
+    tableData: TableRowDto[]
     editingRowId: number | null
     setEditingRowId: Dispatch<SetStateAction<number | null>>
 }
@@ -45,7 +45,7 @@ export const TableRow = ({
 }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null)
 
-    const [formData, setFormData] = useState<FetchTableDataDto>({
+    const [formData, setFormData] = useState<TableRowDto>({
         id: editingRowId,
         rowName,
         salary,
@@ -104,9 +104,9 @@ export const TableRow = ({
             const updatedData = [...prevData]
 
             const addRowToParent = (
-                rows: FetchTableDataDto[],
+                rows: TableRowDto[],
                 parentId: number | null
-            ): FetchTableDataDto[] => {
+            ): TableRowDto[] => {
                 return rows.map((row) => {
                     if (row.id === parentId) {
                         return {
@@ -139,7 +139,7 @@ export const TableRow = ({
                     const newRow = await createTableRow(formData, parentId)
 
                     setTableData((prevData) => {
-                        const replaceTempId = (rows: FetchTableDataDto[]): FetchTableDataDto[] => {
+                        const replaceTempId = (rows: TableRowDto[]): TableRowDto[] => {
                             return rows.map((row) => {
                                 if (row.id === editingRowId) return { ...newRow }
                                 if (row.child?.length)

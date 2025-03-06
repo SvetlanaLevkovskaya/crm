@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
-import { FetchTableDataDto } from '../Table.types'
+import { TableRowDto } from '../Table.types'
 import { updateTableRow } from './TableRow.service'
 import { UpdateTableRowDto } from './TableRow.types'
 
 export const useUpdateRowHook = (
     id: number | null,
     formData: UpdateTableRowDto,
-    setTableData: (data: (prevTableData: FetchTableDataDto[]) => any) => void
+    setTableData: (data: (prevTableData: TableRowDto[]) => any) => void
 ) => {
     return useCallback(async () => {
         try {

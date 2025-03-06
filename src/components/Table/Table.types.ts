@@ -1,4 +1,4 @@
-export interface ChildRow {
+export interface TableRowDto {
     id: number | null
     rowName: string
     total: number
@@ -11,21 +11,5 @@ export interface ChildRow {
     equipmentCosts: number
     overheads: number
     estimatedProfit: number
-    child: ChildRow[]
-}
-
-export interface FetchTableDataDto {
-    id: number | null
-    rowName: string
-    total: number
-    salary: number
-    mimExploitation: number
-    machineOperatorSalary: number
-    materials: number
-    mainCosts: number
-    supportCosts: number
-    equipmentCosts: number
-    overheads: number
-    estimatedProfit: number
-    child: ChildRow[]
+    child: TableRowDto[]
 }
