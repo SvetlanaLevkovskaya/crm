@@ -3,7 +3,7 @@ import { FetchTableDataDto } from '../Table.types'
 import { updateTableRow } from './TableRow.service'
 import { UpdateTableRowDto } from './TableRow.types'
 
-export const useUpdateRow = (
+export const useUpdateRowHook = (
     id: number | null,
     formData: UpdateTableRowDto,
     setTableData: (data: (prevTableData: FetchTableDataDto[]) => any) => void

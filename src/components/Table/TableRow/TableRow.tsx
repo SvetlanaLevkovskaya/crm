@@ -12,9 +12,8 @@ import { LevelIcon, TrashIcon } from '../../ui/Icons'
 import { FetchTableDataDto } from '../Table.types'
 import { createTableRow, deleteTableRow } from './TableRow.service'
 import './TableRow.style.scss'
-import { findParentId, removeRowById } from './TableRow.utils'
-import { formatCurrency } from './formatCurrency'
-import { useUpdateRow } from './useUpdateRow'
+import { findParentId, formatCurrency, removeRowById } from './TableRow.utils'
+import { useUpdateRowHook } from './useUpdateRow.hook'
 
 interface Props {
     id: number | null
@@ -26,6 +25,8 @@ interface Props {
     estimatedProfit: number
     setTableData: Dispatch<SetStateAction<FetchTableDataDto[]>>
     tableData: FetchTableDataDto[]
+    editingRowId: number | null
+    setEditingRowId: Dispatch<SetStateAction<number | null>>
 }
 
 export const TableRow = ({
@@ -38,8 +39,9 @@ export const TableRow = ({
     estimatedProfit,
     setTableData,
     tableData,
+    editingRowId,
+    setEditingRowId,
 }: Props) => {
-    const [editingRowId, setEditingRowId] = useState<number | null>(null)
     const inputRef = useRef<HTMLInputElement | null>(null)
 
     const [formData, setFormData] = useState<FetchTableDataDto>({
@@ -58,7 +60,7 @@ export const TableRow = ({
         child: [],
     })
 
-    const updateRow = useUpdateRow(id, formData, setTableData)
+    const updateRow = useUpdateRowHook(id, formData, setTableData)
 
     const parentId = useMemo(() => findParentId(tableData, editingRowId), [tableData, editingRowId])
 
@@ -167,7 +169,7 @@ export const TableRow = ({
         <td onDoubleClick={handleDoubleClick} className={editingRowId === id ? 'editing' : ''}>
             {editingRowId === id ? (
                 <input
-                    ref={inputRef}
+                    ref={name === 'rowName' ? inputRef : undefined}
                     name={name}
                     type="text"
                     value={value}

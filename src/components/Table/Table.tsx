@@ -1,34 +1,14 @@
-import { Fragment, useEffect, useState } from 'react'
-import { customToastError } from '../ui/CustomToast'
+import { Fragment, useState } from 'react'
 import { Spinner } from '../ui/Spinner'
 import { TABLE_HEADERS } from './Table.conctants'
-import { fetchTableData } from './Table.service'
 import './Table.style.scss'
 import { FetchTableDataDto } from './Table.types'
 import { TableRow } from './TableRow'
+import { useTableData } from './useTableData.hook'
 
 export const Table = () => {
-    const [tableData, setTableData] = useState<FetchTableDataDto[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchTableData()
-                setTableData(data)
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    customToastError(`${error}`)
-                    setError(error.message)
-                }
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchData()
-    }, [])
+    const { tableData, setTableData, loading, error } = useTableData()
+    const [editingRowId, setEditingRowId] = useState<number | null>(null)
 
     if (loading) return <Spinner />
     if (error) return null
@@ -37,15 +17,12 @@ export const Table = () => {
         return data.map((row) => (
             <Fragment key={row.id}>
                 <TableRow
+                    {...row}
                     levelDepth={levelDepth}
-                    rowName={row.rowName}
-                    salary={row.salary}
-                    equipmentCosts={row.equipmentCosts}
-                    overheads={row.overheads}
-                    estimatedProfit={row.estimatedProfit}
-                    id={row.id}
-                    setTableData={setTableData}
                     tableData={tableData}
+                    setTableData={setTableData}
+                    editingRowId={editingRowId}
+                    setEditingRowId={setEditingRowId}
                 />
                 {row.child &&
                     row.child.length > 0 &&
