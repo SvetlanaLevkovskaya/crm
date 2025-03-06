@@ -4,6 +4,33 @@
   position: relative;
   display: table-cell;
   vertical-align: middle;
+  line-height: 1em;
+  padding-left: calc(20px * 2);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--depth) * 20px - 8px);
+    top: 60%;
+    border-bottom: 1px solid $border-color;
+    width: 16px;
+
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--depth) * 20px - 8px);
+    top: -38%;
+    bottom: 0;
+    border-left: 1px solid $border-color;
+    width: 1px;
+    height: 100%;
+  }
+
+  &:last-child::after {
+    display: none;
+  }
 
   .level-icon-wrapper {
     display: inline-flex;
@@ -42,4 +69,9 @@
     opacity: 1;
     pointer-events: auto;
   }
+}
+
+.level-cell[data-depth="0"]::before,
+.level-cell[data-depth="0"]::after {
+  display: none;
 }

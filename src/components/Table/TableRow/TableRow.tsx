@@ -1,5 +1,6 @@
 import {
     ChangeEvent,
+    CSSProperties,
     Dispatch,
     KeyboardEvent,
     SetStateAction,
@@ -197,7 +198,12 @@ export const TableRow = ({
             <td
                 className="level-cell"
                 data-depth={levelDepth}
-                style={{ paddingLeft: `${levelDepth * 20}px` }}
+                style={
+                    {
+                        '--depth': levelDepth,
+                        paddingLeft: `${levelDepth * 20}px`,
+                    } as CSSProperties
+                }
             >
                 <div className="level-icon-wrapper">
                     <div className="icon-container">
