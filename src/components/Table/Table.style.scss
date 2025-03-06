@@ -31,7 +31,8 @@
     }
 
     th:nth-child(1) {
-      width: 110px;
+      max-width: 110px;
+      width: auto;
     }
 
     th:nth-child(2) {
