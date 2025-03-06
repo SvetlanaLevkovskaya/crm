@@ -4,7 +4,7 @@ import { updateTableRow } from './TableRow.service'
 import { UpdateTableRowDto } from './TableRow.types'
 
 export const useUpdateRow = (
-    id: number,
+    id: number | null,
     formData: UpdateTableRowDto,
     setTableData: (data: (prevTableData: FetchTableDataDto[]) => any) => void
 ) => {

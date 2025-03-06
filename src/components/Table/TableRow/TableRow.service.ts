@@ -1,9 +1,23 @@
 import { handleApiError, instanceAxios } from '../../../services'
+import { EID } from '../Table.conctants'
+import { FetchTableDataDto } from '../Table.types'
 import { UpdateTableRowDto } from './TableRow.types'
 
-export const updateTableRow = async (id: number, formData: UpdateTableRowDto) => {
+export const createTableRow = async (formData: FetchTableDataDto, parentId: number | null) => {
     try {
-        await instanceAxios.post(`/v1/outlay-rows/entity/1/row/${id}/update`, {
+        const response = await instanceAxios.post(`/v1/outlay-rows/entity/${EID}/row/create`, {
+            ...formData,
+            parentId,
+        })
+        return response.data.current
+    } catch (error) {
+        throw new Error(handleApiError(error))
+    }
+}
+
+export const updateTableRow = async (id: number | null, formData: UpdateTableRowDto) => {
+    try {
+        await instanceAxios.post(`/v1/outlay-rows/entity/${EID}/row/${id}/update`, {
             ...formData,
             salary: parseFloat(String(formData.salary)) || 0,
             equipmentCosts: parseFloat(String(formData.equipmentCosts)) || 0,
@@ -15,6 +29,14 @@ export const updateTableRow = async (id: number, formData: UpdateTableRowDto) =>
             mainCosts: 0,
             supportCosts: 0,
         })
+    } catch (error) {
+        throw new Error(handleApiError(error))
+    }
+}
+
+export const deleteTableRow = async (id: number | null) => {
+    try {
+        await instanceAxios.delete(`/v1/outlay-rows/entity/${EID}/row/${id}/delete`)
     } catch (error) {
         throw new Error(handleApiError(error))
     }

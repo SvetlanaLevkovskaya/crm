@@ -1,42 +1,43 @@
 import axios from 'axios'
 
 export const handleApiError = (error: unknown): string => {
-  let errorMessage = 'Unexpected Error'
+    let errorMessage = 'Unexpected Error'
 
-  if (axios.isAxiosError(error)) {
-    if (error.response) {
-      console.error('API Error:', error.response.data)
-      errorMessage = error.response.data?.message ?? error.response.statusText
-    } else if (error.request) {
-      console.error('No response Error:', error.request)
-      errorMessage = 'No response from server'
+    if (axios.isAxiosError(error)) {
+        if (error.response) {
+            console.error('API Error:', error.response.data)
+            errorMessage = error.response.data?.message ?? error.response.statusText
+        } else if (error.request) {
+            console.error('No response Error:', error.request)
+            errorMessage = 'No response from server'
+        }
+    } else if (error instanceof Error) {
+        console.error('Unknown Error:', error.message)
+        errorMessage = error.message
+    } else {
+        console.error('Unexpected Error:', error)
+        errorMessage = 'Unexpected Error'
     }
-  } else if (error instanceof Error) {
-    console.error('Unknown Error:', error.message)
-    errorMessage = error.message
-  } else {
-    console.error('Unexpected Error:', error)
-    errorMessage = 'Unexpected Error'
-  }
 
-  return errorMessage
+    return errorMessage
 }
 
 export const instanceAxios = axios.create({
-  baseURL: 'http://185.244.172.108:8081/',
+    /* baseURL: 'http://185.244.172.108:8081/',*/
+    baseURL: '/api',
 })
 
 instanceAxios.interceptors.request.use((config) => {
-  if (config.url && config.url.startsWith('http://')) {
-    console.warn('Insecure HTTP request detected:', config.url)
-  }
-  return config
+    if (config.url && config.url.startsWith('http://')) {
+        console.warn('Insecure HTTP request detected:', config.url)
+    }
+    return config
 })
 
 instanceAxios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const errorMessage = handleApiError(error)
-    return Promise.reject(new Error(errorMessage))
-  }
+    (response) => response,
+    (error) => {
+        const errorMessage = handleApiError(error)
+        return Promise.reject(new Error(errorMessage))
+    }
 )

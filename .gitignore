@@ -3,4 +3,4 @@
 .DS_Store
 analysis.json
 .idea
-.env
+.env.local

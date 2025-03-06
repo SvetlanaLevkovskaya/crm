@@ -1,3 +1,5 @@
+@import "/src/styles/variables";
+
 .level-cell {
   position: relative;
   display: table-cell;
@@ -7,8 +9,34 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
+    position: relative;
+    cursor: pointer;
+
+    .icon-container {
+      padding: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+
+      &:hover {
+        background-color: $border-color;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .trash-icon-wrapper {
+    margin-top: 2px;
+    margin-left: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+
+  .level-icon-wrapper:hover .trash-icon-wrapper {
+    opacity: 1;
+    pointer-events: auto;
   }
 }

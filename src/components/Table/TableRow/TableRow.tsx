@@ -1,19 +1,23 @@
 import {
     ChangeEvent,
-    KeyboardEvent,
     Dispatch,
+    KeyboardEvent,
     SetStateAction,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react'
-import { LevelIcon } from '../../ui/Icons'
+import { LevelIcon, TrashIcon } from '../../ui/Icons'
 import { FetchTableDataDto } from '../Table.types'
+import { createTableRow, deleteTableRow } from './TableRow.service'
+import './TableRow.style.scss'
+import { findParentId, removeRowById } from './TableRow.utils'
 import { formatCurrency } from './formatCurrency'
 import { useUpdateRow } from './useUpdateRow'
 
 interface Props {
-    id: number
+    id: number | null
     levelDepth: number
     rowName: string
     salary: number
@@ -21,6 +25,7 @@ interface Props {
     overheads: number
     estimatedProfit: number
     setTableData: Dispatch<SetStateAction<FetchTableDataDto[]>>
+    tableData: FetchTableDataDto[]
 }
 
 export const TableRow = ({
@@ -32,18 +37,13 @@ export const TableRow = ({
     overheads,
     estimatedProfit,
     setTableData,
+    tableData,
 }: Props) => {
-    const [editingField, setEditingField] = useState<{
-        rowId: number | null
-        field: string | null
-    }>({
-        rowId: null,
-        field: null,
-    })
-
+    const [editingRowId, setEditingRowId] = useState<number | null>(null)
     const inputRef = useRef<HTMLInputElement | null>(null)
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FetchTableDataDto>({
+        id: editingRowId,
         rowName,
         salary,
         equipmentCosts,
@@ -54,77 +54,141 @@ export const TableRow = ({
         materials: 0,
         mainCosts: 0,
         supportCosts: 0,
+        total: 0,
+        child: [],
     })
 
     const updateRow = useUpdateRow(id, formData, setTableData)
 
-    const handleDoubleClick = (field: string) => {
-        if (editingField.rowId !== id || editingField.field !== field) {
-            setEditingField({ rowId: id, field })
-        }
+    const parentId = useMemo(() => findParentId(tableData, editingRowId), [tableData, editingRowId])
+
+    const handleDoubleClick = () => {
+        setEditingRowId(id)
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-
-        if (name === 'rowName') {
-            setFormData((prev) => ({
-                ...prev,
-                [name]: value,
-            }))
-            return
-        }
-
-        let formattedValue = value
+        const formattedValue = value
             .replace(/[^0-9.,]/g, '')
             .replace(',', '.')
             .replace(/(\..*?)\..*/g, '$1')
 
         setFormData((prev) => ({
             ...prev,
-            [name]: formattedValue,
+            [name]: name === 'rowName' ? value : formattedValue,
         }))
     }
 
-    const handleBlurOrEnter = async () => {
-        setEditingField({ rowId: null, field: null })
-        await updateRow()
-    }
-
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') handleBlurOrEnter()
-    }
-
-    useEffect(() => {
-        if (editingField.rowId === id && editingField.field && inputRef.current) {
-            const inputElement = inputRef.current
-            inputElement.selectionStart = inputElement.selectionEnd = inputElement.value.length
-            inputElement.focus()
+    const createRow = (parentId: number | null) => {
+        const newRow = {
+            id: null,
+            parentId,
+            rowName: '',
+            salary: 0,
+            equipmentCosts: 0,
+            overheads: 0,
+            estimatedProfit: 0,
+            mimExploitation: 0,
+            machineOperatorSalary: 0,
+            materials: 0,
+            mainCosts: 0,
+            supportCosts: 0,
+            total: 0,
+            child: [],
         }
-    }, [editingField, id])
+
+        setTableData((prevData) => {
+            const updatedData = [...prevData]
+
+            const addRowToParent = (
+                rows: FetchTableDataDto[],
+                parentId: number | null
+            ): FetchTableDataDto[] => {
+                return rows.map((row) => {
+                    if (row.id === parentId) {
+                        return {
+                            ...row,
+                            child: Array.isArray(row.child) ? [...row.child, newRow] : [newRow],
+                        }
+                    }
+                    if (row.child?.length > 0) {
+                        return {
+                            ...row,
+                            child: addRowToParent(row.child, parentId),
+                        }
+                    }
+                    return row
+                })
+            }
+
+            return addRowToParent(updatedData, parentId)
+        })
+
+        setEditingRowId(null)
+    }
+
+    const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            try {
+                if (editingRowId !== null) {
+                    await updateRow()
+                } else {
+                    const newRow = await createTableRow(formData, parentId)
+
+                    setTableData((prevData) => {
+                        const replaceTempId = (rows: FetchTableDataDto[]): FetchTableDataDto[] => {
+                            return rows.map((row) => {
+                                if (row.id === editingRowId) return { ...newRow }
+                                if (row.child?.length)
+                                    return { ...row, child: replaceTempId(row.child) }
+                                return row
+                            })
+                        }
+                        return replaceTempId(prevData)
+                    })
+                }
+                setEditingRowId(null)
+            } catch (error) {
+                console.error('Ошибка при сохранении строки', error)
+            }
+        }
+    }
+
+    const deleteRow = async () => {
+        try {
+            await deleteTableRow(id)
+            setTableData((prevData) => removeRowById(prevData, id))
+        } catch (error) {
+            console.error('Ошибка при удалении строки', error)
+        }
+    }
 
     const renderCell = (name: keyof typeof formData, value: string | number) => (
-        <td
-            onDoubleClick={() => handleDoubleClick(name)}
-            className={editingField.rowId === id && editingField.field === name ? 'editing' : ''}
-        >
-            {editingField.rowId === id && editingField.field === name ? (
+        <td onDoubleClick={handleDoubleClick} className={editingRowId === id ? 'editing' : ''}>
+            {editingRowId === id ? (
                 <input
                     ref={inputRef}
                     name={name}
                     type="text"
                     value={value}
                     onChange={handleChange}
-                    onBlur={handleBlurOrEnter}
                     onKeyDown={handleKeyDown}
                 />
             ) : name !== 'rowName' ? (
                 formatCurrency(Number(value))
             ) : (
-                value
+                value || ''
             )}
         </td>
     )
+
+    useEffect(() => {
+        if (editingRowId === id && inputRef.current) {
+            inputRef.current.selectionStart = inputRef.current.selectionEnd =
+                inputRef.current.value.length
+            inputRef.current.focus()
+        }
+    }, [editingRowId, id])
 
     return (
         <tr>
@@ -134,7 +198,12 @@ export const TableRow = ({
                 style={{ paddingLeft: `${levelDepth * 20}px` }}
             >
                 <div className="level-icon-wrapper">
-                    <LevelIcon className="level-icon" />
+                    <div className="icon-container">
+                        <LevelIcon className="level-icon" onClick={() => createRow(id)} />
+                        <div className="trash-icon-wrapper" onClick={deleteRow}>
+                            <TrashIcon />
+                        </div>
+                    </div>
                 </div>
             </td>
             {renderCell('rowName', formData.rowName)}

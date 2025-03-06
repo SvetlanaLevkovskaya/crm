@@ -1,19 +1,11 @@
 import { Fragment, useEffect, useState } from 'react'
 import { customToastError } from '../ui/CustomToast'
 import { Spinner } from '../ui/Spinner'
+import { TABLE_HEADERS } from './Table.conctants'
 import { fetchTableData } from './Table.service'
 import './Table.style.scss'
 import { FetchTableDataDto } from './Table.types'
 import { TableRow } from './TableRow'
-
-const TABLE_HEADERS = [
-    'Уровень',
-    'Наименование работ',
-    'Основная з/п',
-    'Оборудование',
-    'Накладные расходы',
-    'Сметная прибыль',
-]
 
 export const Table = () => {
     const [tableData, setTableData] = useState<FetchTableDataDto[]>([])
@@ -53,10 +45,11 @@ export const Table = () => {
                     estimatedProfit={row.estimatedProfit}
                     id={row.id}
                     setTableData={setTableData}
+                    tableData={tableData}
                 />
                 {row.child &&
                     row.child.length > 0 &&
-                    levelDepth < 2 &&
+                    levelDepth < 3 &&
                     renderRows(row.child, levelDepth + 1)}
             </Fragment>
         ))

@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 
 body {
@@ -20,6 +21,7 @@ body {
 
 .container {
   display: flex;
+  padding-bottom: 40px;
 
   .main-content {
     background-color: $table-color;
