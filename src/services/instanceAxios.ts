@@ -23,8 +23,7 @@ export const handleApiError = (error: unknown): string => {
 }
 
 export const instanceAxios = axios.create({
-    /*baseURL: 'http://185.244.172.108:8081/',*/
-    baseURL: '/api',
+    baseURL: process.env.REACT_APP_BASE_URL,
 })
 
 instanceAxios.interceptors.request.use((config) => {

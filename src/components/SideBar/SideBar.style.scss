@@ -2,6 +2,7 @@
 
 .sidebar {
   width: $sidebar-width;
+  flex-shrink: 0;
   min-width: 32px;
   position: relative;
   display: inline-block;
