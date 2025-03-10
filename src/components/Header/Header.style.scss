@@ -2,52 +2,63 @@
 
 .header {
   padding: 10px 20px 9px 20px;
-  border-bottom: 1px solid $border-color;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  position: relative;
-  color: $text-gray-color;
+  border-bottom: 1px solid $color-border;
+  color: $color-text-muted;
 
-  & svg {
-    &:hover {
-      color: $text-color;
-    }
-  }
+  .nav {
+    display: flex;
+    align-items: center;
 
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
 
-  .nav-link, svg {
-    cursor: pointer;
-    transition: color 0.3s;
-    position: relative;
-    text-align: center;
-  }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        padding: 0 6px;
+        transition: color 0.3s;
+        position: relative;
 
-  .nav-link {
-    padding-left: 6px;
-    padding-right: 6px;
+        &:hover,
+        &[aria-current="page"] {
+          color: $color-text-white;
+        }
 
-    &:hover {
-      color: $text-color;
-    }
-  }
+        &[aria-current="page"]::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -12px;
+          width: 100%;
+          height: 1px;
+          background-color: $color-text-white;
+        }
+      }
 
+      .icon-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s;
 
-  .active {
-    color: $text-color;
-
-    &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -15px;
-      width: 100%;
-      height: 2px;
-      background-color: white;
+        &:hover {
+          color: $color-text-white;
+        }
+      }
     }
   }
 }
+
+
+
+
+
+
+

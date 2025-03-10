@@ -11,14 +11,14 @@
     content: "";
     position: absolute;
     left: calc(var(--depth) * 20px - 8px);
-    border-color: $border-color;
+    border-color: $color-border;
     transition: all 0.3s ease-in-out;
   }
 
   &::before {
     top: 50%;
     width: 16px;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid $color-border;
   }
 
   &::after {
@@ -26,7 +26,7 @@
     bottom: 0;
     width: 1px;
     height: 100%;
-    border-left: 1px solid $border-color;
+    border-left: 1px solid $color-border;
   }
 
   &[data-depth="0"]::before,
@@ -54,7 +54,7 @@
 
 
       &:hover {
-        background-color: $border-color;
+        background-color: $color-border;
         border-radius: 4px;
       }
     }

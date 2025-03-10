@@ -12,8 +12,8 @@ body {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.3;
-  background: $bg-dark;
-  color: $text-color;
+  background: $color-background-dark;
+  color: $color-text-white;
   max-width: 1920px;
   margin: 0 auto;
   height: 100vh;
@@ -21,12 +21,12 @@ body {
 
 .container {
   display: flex;
-  padding-bottom: $padding;
+  padding-bottom: $default-padding;
 
   .main-content {
-    background-color: $table-color;
+    background-color: $color-table-background;
     flex-grow: 1;
-    min-height: calc(100vh - $height - $padding);
+    min-height: calc(100vh - $header-height - $default-padding);
 
     .title-container {
       font-size: 18px;
@@ -34,7 +34,7 @@ body {
       padding: 11px 14px;
       display: flex;
       flex-wrap: wrap;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $color-border;
     }
 
     .title-container span {
@@ -49,8 +49,8 @@ body {
       top: -11px;
       bottom: 0;
       width: 1px;
-      height: $height;
-      background-color: $border-color;
+      height: $header-height;
+      background-color: $color-border;
     }
 
     .title-container span:last-child::after {

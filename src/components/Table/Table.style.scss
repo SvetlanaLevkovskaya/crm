@@ -10,13 +10,13 @@
 
     th {
       padding: 10px;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $color-border;
       text-align: left;
     }
 
     td {
       padding: 16px 12px;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $color-border;
       text-align: left;
 
       &.editing {
@@ -26,7 +26,7 @@
     }
 
     th {
-      color: $text-gray-color;
+      color: $color-text-muted;
       font-weight: 400;
     }
 
@@ -53,14 +53,14 @@ td input {
   width: 100%;
   height: 36px;
   padding: 8px;
-  border: 1px solid $border-color;
+  border: 1px solid $color-border;
   border-radius: 6px;
-  background-color: $table-color;
-  color: $text-gray-color;
+  background-color: $color-table-background;
+  color: $color-text-muted;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 
   &:focus {
-    border: 1px solid $border-color;
+    border: 1px solid $color-border;
     outline: none;
   }
 }

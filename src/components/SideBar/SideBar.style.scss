@@ -6,19 +6,19 @@
   min-width: 32px;
   position: relative;
   display: inline-block;
-  border-right: 1px solid $border-color;
+  border-right: 1px solid $color-border;
 
   .dropdown-button {
     background: none;
     border: none;
-    color: $text-gray-color;
+    color: $color-text-muted;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     padding: 8px 10px 9px 20px;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid $color-border;
 
     .button-content {
       display: flex;
@@ -33,7 +33,7 @@
 
     .arrow-icon {
       margin-left: auto;
-      fill: $text-color;
+      fill: $color-text-white;
     }
   }
 
@@ -51,16 +51,16 @@
       align-items: center;
       gap: 14px;
       padding: 5px 5px 5px 20px;
-      color: $text-color;
+      color: $color-text-white;
       cursor: pointer;
 
       &.active {
         font-weight: bold;
-        background-color: $text-gray-color;
+        background-color: $color-text-muted;
       }
 
       &:hover {
-        background-color: $border-color;
+        background-color: $color-border;
       }
     }
   }
